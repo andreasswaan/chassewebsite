@@ -11,12 +11,13 @@
         <title>Page Title</title>
         <link rel="stylesheet"href="https://js.arcgis.com/4.22/esri/themes/dark/main.css"/>
         <script src="https://js.arcgis.com/4.22/"></script>
+        <link rel="shortcut icon" href="https://raw.githubusercontent.com/andreasswaan/chassewebsite/main/chassewebsite/map.png">
 
         <style>
             html, body, #viewDiv {
               padding: 0;
               margin: 0;
-              height: 97.5%;
+              height: 96.3%;
               width: 100%;
             }
         </style>
@@ -216,6 +217,8 @@
                     "content": "<b>Commune:</b> {Commune}<br><b>Date de chasse:</b> {Date_de_chasse}<br><b>Locataire:</b> {Locataire}<br><b>lot_de_chasse:</b> {lot_de_chasse}"
                 }
                     
+                
+                
                 let locateWidget = new Locate({
                     view: view,   // Attaches the Locate button to the view
 
