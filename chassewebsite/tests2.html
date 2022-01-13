@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>Chasses Saint-Hubert</title>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+        <title>Page Title</title>
+        <link rel="stylesheet"href="https://js.arcgis.com/4.22/esri/themes/dark/main.css"/>
+        <script src="https://js.arcgis.com/4.22/"></script>
+
+        <style>
+            html, body, #viewDiv {
+              padding: 0;
+              margin: 0;
+              height: 97.5%;
+              width: 100%;
+            }
+        </style>
+
+
+        <script>
+            
+            var url = "https://raw.githubusercontent.com/andreasswaan/chasse/main/Book6.csv";
+
+            var request = new XMLHttpRequest();  
+            request.open("GET", url, false);   
+            request.send(null);  
+            var numerosdelot3 = [1]
+            var csvData = new Array();
+            var jsonObject = request.responseText.split();
+            for (var i = 0; i < jsonObject.length; i++) {
+                csvData.push(jsonObject[i].split(';'));
+                
+            }
+            
+        
+            
+            
+            
+
+           
+            
+  
+            
+            require(["esri/config", "esri/Map", "esri/views/MapView", "esri/renderers/UniqueValueRenderer", "esri/layers/FeatureLayer", "esri/widgets/BasemapToggle", "esri/widgets/Locate"], function (esriConfig,Map, MapView, UniqueValueRenderer, FeatureLayer, BasemapToggle, Locate) {
+                
+                esriConfig.apiKey = "AAPK3a45b476959a41d080f33ce3542d30526feTivpPtHz8q38AE2qg-kFp_CRgZ84b435j2wktZLPRau5Hqa-uVRld2qSdEIkY";
+                
+                $( function() {
+                    $( "#datepicker" ).datepicker({
+                        dateFormat: 'dd/mm/yy',
+                        
+                        onSelect: function(dateText, inst) {
+                            removeunique()
+                            var date2 = $(this).val();
+                            var time2 = $('#time').val();
+                            console.log(date2);
+                            console.log(window.numerosdelot3)
+                            
+                            
+                            
+                            let jour = date2.slice(0, 2);
+                            console.log(jour)
+                            let mois = date2.slice(3, 5);
+                            console.log(mois)
+                            let annee = date2.slice(6);
+                            console.log(annee)
+
+                            if (annee == 2021){
+
+                                
+
+                                if (mois == 10){
+
+                                    var filtered = dataarray.filter(dataarray => dataarray.Octobre === jour);
+                                    console.log(filtered);
+
+                                    window.numerosdelot3 = filtered.map(filtered => filtered.numero);
+                                    console.log(window.numerosdelot3);
+                                    
+                                };
+
+                                if (mois == 11){
+  
+                                   
+                                    var filtered = dataarray.filter(dataarray => dataarray.Novembre === jour);
+                                    console.log(filtered);
+
+                                    window.numerosdelot3 = filtered.map(filtered => filtered.numero);
+                                    console.log(window.numerosdelot3);
+                                    
+                                };
+
+                                if (mois == 12){
+
+                                    var filtered = dataarray.filter(dataarray => dataarray.Decembre === jour);
+                                    console.log(filtered);
+
+                                    window.numerosdelot3 = filtered.map(filtered => filtered.numero);
+                                    console.log(window.numerosdelot3);
+                                    
+                                };
+                                
+                            };
+
+                            if (annee == 2022){
+                                if (mois == 01){
+
+                                    var filtered = dataarray.filter(dataarray => dataarray.janvier === jour);
+                                    console.log(filtered);
+
+                                    window.numerosdelot3 = filtered.map(filtered => filtered.numero);
+                                    console.log(window.numerosdelot3);
+
+                                };
+
+                            };
+
+                            console.log(window.numerosdelot3.length)
+
+                            addunique()
+
+
+
+                            displaymap1(window.numerosdelot3);
+                            
+                            
+                        }
+                    });       
+                });
+                
+
+                function addunique() {
+                    for (x = 0; x < window.numerosdelot3.length; x++) {
+                        console.log("lal")
+                        renderer.addUniqueValueInfo({
+                                value: window.numerosdelot3[x],
+                                symbol: {
+                                    type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                                    color: "rgba(230, 0, 0, 0.4)",
+                                    "outline": {color: "rgba(167, 0, 0, 1)", width: "4px"},
+                                    
+                                }
+                            });
+                    }
+                }
+
+                function removeunique() {
+                    
+                    for (y = -1; y < window.numerosdelot3.length; y++) {
+                        console.log("icicici")
+                        renderer.removeUniqueValueInfo(window.numerosdelot3[y]);
+                    }
+                }
+
+
+
+                var renderer = new UniqueValueRenderer({
+                    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+                    field: "lot_de_chasse",
+                    defaultSymbol: { type: "simple-fill", color: "rgba(28, 252, 0, 0.2)", opacity: 0.2, "outline": {color: "rgba(5, 167, 0, 1)", width: "4px"}, }   // autocasts as new SimpleFillSymbol()
+                });
+
+
+
+                            
+                
+                var dataarray = csvToArray()
+               function csvToArray(str = request.responseText, delimiter = ";") {
+
+                    const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+
+                    const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+
+                    const arr = rows.map(function (row) {
+                    const values = row.split(delimiter);
+                    const el = headers.reduce(function (object, header, index) {
+                    object[header] = values[index];
+                    return object;
+                    }, {});
+                    return el;
+                    });
+                    console.log(arr)
+                    // return the array
+                    return arr;
+                }
+
+
+                
+
+                
+
+        
+                const map = new Map({
+                    basemap: "osm"
+                });
+
+                const view = new MapView({
+                    container: "viewDiv",
+                    map: map,
+                    center: [5.3740, 50.0267 ],
+                    scale: 200000,
+                });
+                const basemapToggle = new BasemapToggle({
+                    view: view,
+                    nextBasemap: "arcgis-imagery"
+                });
+                view.ui.add(basemapToggle,"top-right");
+                const popupTrailheads = {
+                    "title": "Chasse",
+                    "content": "<b>Commune:</b> {Commune}<br><b>Date de chasse:</b> {Date_de_chasse}<br><b>Locataire:</b> {Locataire}<br><b>lot_de_chasse:</b> {lot_de_chasse}"
+                }
+                    
+                let locateWidget = new Locate({
+                    view: view,   // Attaches the Locate button to the view
+
+                });
+                view.ui.add(locateWidget, "top-right");
+
+
+
+
+
+                
+
+                function displaymap1(numerosdelot){
+
+                    map.removeAll();
+                    
+                    const parksLayer = new FeatureLayer({
+                        url: "https://services.arcgis.com/27lvCEbtrqOWudz4/arcgis/rest/services/chasses_saint_hubert/FeatureServer/0",
+                        renderer: renderer,
+                        popupTemplate: popupTrailheads
+
+                    });
+
+                    map.add(parksLayer, 0);
+
+
+
+                    
+               
+                }
+    
+                
+                function removeall() {
+                   if (window.numerosdelot3 === undefined){
+                    console.log('icila')
+                   }
+                  
+                    else{ 
+                        console.log('ici')
+                        renderer.removeUniqueValueInfo(window.numerosdelot3[0]);
+                    
+                        
+                    
+                    
+                    }
+
+                }
+               
+
+
+
+
+                displaymap1()
+
+
+
+                })
+  
+          
+          
+        
+
+
+
+
+
+
+
+
+
+
+        </script>
+
+
+    </head>
+    <body>
+        <p>Date: <input type="text" id="datepicker"></p>
+        <div id="viewDiv"></div>
+    </body>
+</html>
