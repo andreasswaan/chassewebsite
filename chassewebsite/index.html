@@ -37,6 +37,7 @@
                 
             }
             
+            
         
             
             
@@ -230,6 +231,7 @@
                 function displaymap1(numerosdelot){
 
                     map.removeAll();
+                    buttonpressed = 0
                     
                     const parksLayer = new FeatureLayer({
                         url: "https://services.arcgis.com/27lvCEbtrqOWudz4/arcgis/rest/services/chasses_saint_hubert/FeatureServer/0",
@@ -261,9 +263,31 @@
                     
                     }
 
-                }
-               
+                };
+                var buttonpressed = 0
+                document.getElementById("demo").onclick = function() {
 
+                    if (buttonpressed == 0){
+                        map.removeAll();
+                        buttonpressed = 1
+                        console.log(buttonpressed)
+
+                    }
+
+                    else {
+
+                        const parksLayer = new FeatureLayer({
+                        url: "https://services.arcgis.com/27lvCEbtrqOWudz4/arcgis/rest/services/chasses_saint_hubert/FeatureServer/0",
+                        renderer: renderer,
+                        popupTemplate: popupTrailheads
+
+                        });
+                        map.add(parksLayer, 0);
+                        buttonpressed = 0
+                        console.log(buttonpressed)
+                    }
+                
+                };
 
 
 
@@ -291,7 +315,7 @@
 
     </head>
     <body>
-        <p>Date: <input type="text" id="datepicker"></p>
+        <p>Date: <input type="text" id="datepicker"><button type="button", id="demo">hide/show lots</button></p>
         <div id="viewDiv"></div>
     </body>
 </html>
