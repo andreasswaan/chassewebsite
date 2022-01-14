@@ -41,7 +41,10 @@
             
             
         
-            
+            var map;
+            var graphic;
+            var currLocation;
+            var watchId;
             
             
 
@@ -225,6 +228,40 @@
 
                 });
                 view.ui.add(locateWidget, "top-right");
+                map.on("load", initFunc);
+
+                function initFunc(map) {
+                    if( navigator.geolocation ) {  
+                        navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
+                        watchId = navigator.geolocation.watchPosition(showLocation, locationError);
+                    } else {
+                        alert("Browser doesn't support Geolocation. Visit http://caniuse.com to see browser support for the Geolocation API.");
+                    }
+                }
+
+                function zoomToLocation(location) {
+                    var pt = new Point(location.coords.longitude, location.coords.latitude);
+                    addGraphic(pt);
+                    
+                }   
+
+                function showLocation(location) {
+                    //zoom to the users location and add a graphic
+                    var pt = new Point(location.coords.longitude, location.coords.latitude);
+                    if ( !graphic ) {
+                        addGraphic(pt);
+                    } else { // move the graphic if it already exists
+                        graphic.setGeometry(pt);
+                    }
+                    map.centerAt(pt);
+                }
+
+                function addGraphic(pt){
+                    var symbol = new SimpleMarkerSymbol(
+                    SimpleMarkerSymbol.STYLE_CIRCLE, 12, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([210, 105, 30, 0.5]), 8), new Color([210, 105, 30, 0.9]));
+                    graphic = new Graphic(pt, symbol);
+                    map.graphics.add(graphic);
+                }
 
 
 
