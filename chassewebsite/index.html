@@ -5,7 +5,7 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>Chasses Saint-Hubert</title>
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-    
+        <meta name="apple-mobile-web-app-capable" content="yes">
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
         <title>Page Title</title>
@@ -52,7 +52,7 @@
             
   
             
-            require(["esri/config", "esri/Map", "esri/views/MapView", "esri/renderers/UniqueValueRenderer", "esri/layers/FeatureLayer", "esri/widgets/BasemapToggle", "esri/widgets/Locate"], function (esriConfig,Map, MapView, UniqueValueRenderer, FeatureLayer, BasemapToggle, Locate) {
+            require(["esri/config", "esri/Map", "esri/views/MapView", "esri/renderers/UniqueValueRenderer", "esri/layers/FeatureLayer", "esri/widgets/BasemapToggle", "esri/widgets/Locate", "dojo/domReady!"], function (esriConfig,Map, MapView, UniqueValueRenderer, FeatureLayer, BasemapToggle, Locate) {
                 
                 esriConfig.apiKey = "AAPK3a45b476959a41d080f33ce3542d30526feTivpPtHz8q38AE2qg-kFp_CRgZ84b435j2wktZLPRau5Hqa-uVRld2qSdEIkY";
                 
@@ -239,8 +239,13 @@
 
 
 
+                map.on("load", test);
 
+                function test(){
 
+                    console.log("yessss")
+                }
+                
                 
 
                 function displaymap1(numerosdelot){
