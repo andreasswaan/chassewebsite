@@ -52,7 +52,8 @@
             
   
             
-            require(["esri/config", "esri/Map", "esri/views/MapView", "esri/renderers/UniqueValueRenderer", "esri/layers/FeatureLayer", "esri/widgets/BasemapToggle", "esri/widgets/Locate", "dojo/domReady!"], function (esriConfig,Map, MapView, UniqueValueRenderer, FeatureLayer, BasemapToggle, Locate) {
+            require(["esri/widgets/Track", "esri/config", "esri/Map", "esri/views/MapView", "esri/renderers/UniqueValueRenderer", "esri/layers/FeatureLayer", "esri/widgets/BasemapToggle", "esri/widgets/Locate", "dojo/domReady!", "dojo/on"], 
+                function (Track, esriConfig,Map, MapView, UniqueValueRenderer, FeatureLayer, BasemapToggle, Locate, on) {
                 
                 esriConfig.apiKey = "AAPK3a45b476959a41d080f33ce3542d30526feTivpPtHz8q38AE2qg-kFp_CRgZ84b435j2wktZLPRau5Hqa-uVRld2qSdEIkY";
                 
@@ -66,7 +67,6 @@
                             var time2 = $('#time').val();
                             console.log(date2);
                             console.log(window.numerosdelot3)
-                            
                             
                             
                             let jour = date2.slice(0, 2);
@@ -201,7 +201,7 @@
                 
 
         
-                const map = new Map({
+                var map = new Map({
                     basemap: "osm"
                 });
 
@@ -217,34 +217,29 @@
                 });
                 view.ui.add(basemapToggle,"top-right");
                 const popupTrailheads = {
+                    
                     "title": "Chasse",
                     "content": "<b>Commune:</b> {Commune}<br><b>Date de chasse:</b> {Date_de_chasse}<br><b>Locataire:</b> {Locataire}<br><b>lot_de_chasse:</b> {lot_de_chasse}"
                 }
                     
                 
-                
-                let locateWidget = new Locate({
-                    view: view,   // Attaches the Locate button to the view
 
+
+                
+                //map.on("load", initFunc(map))
+
+                var track = new Track({
+                    view: view
                 });
-                view.ui.add(locateWidget, "top-right");
+                view.ui.add(track, "top-left");
+
+                // The sample will start tracking your location
+                // once the view becomes ready
+                view.when(function () {
+                    track.start();
+                    
+                });
                 
-
-                function addGraphic(pt){
-                    var symbol = new SimpleMarkerSymbol(
-                    SimpleMarkerSymbol.STYLE_CIRCLE, 12, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([210, 105, 30, 0.5]), 8), new Color([210, 105, 30, 0.9]));
-                    graphic = new Graphic(pt, symbol);
-                    map.graphics.add(graphic);
-                }
-
-
-
-                map.on("load", test);
-
-                function test(){
-
-                    console.log("yessss")
-                }
                 
                 
 
@@ -261,7 +256,6 @@
                     });
 
                     map.add(parksLayer, 0);
-
 
 
                     
@@ -312,7 +306,6 @@
 
 
                 displaymap1()
-
 
 
                 })
