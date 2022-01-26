@@ -55,7 +55,7 @@
             require(["esri/widgets/Track", "esri/config", "esri/Map", "esri/views/MapView", "esri/renderers/UniqueValueRenderer", "esri/layers/FeatureLayer", "esri/widgets/BasemapToggle", "esri/widgets/Locate", "dojo/domReady!", "dojo/on"], 
                 function (Track, esriConfig,Map, MapView, UniqueValueRenderer, FeatureLayer, BasemapToggle, Locate, on) {
                 
-                esriConfig.apiKey = "AAPK3a45b476959a41d080f33ce3542d30526feTivpPtHz8q38AE2qg-kFp_CRgZ84b435j2wktZLPRau5Hqa-uVRld2qSdEIkY";
+                esriConfig.apiKey = "AAPK57d2e0cc40a54b1fb5e1f9bdcc113896Hz18BLEfH0NCNxsrI0aW_NheFMCb3wQ2SKu_KxmAFmDfOCiiXxVgvydWkefP2qxy";
                 
                 $( function() {
                     $( "#datepicker" ).datepicker({
@@ -133,13 +133,15 @@
 
 
                             displaymap1(window.numerosdelot3);
-                            
+                            test1()
                             
                         }
                     });       
                 });
                 
-
+                function test1 (pos){
+  console.info(pos.coords.latitude, pos.coords.longitude);
+}
                 function addunique() {
                     for (x = 0; x < window.numerosdelot3.length; x++) {
                         console.log("lallalallallala")
@@ -314,7 +316,9 @@
           
           
         
-
+                const showLogin = () => {
+        window.location.href = "./loginpage.html";
+      };
 
 
 
@@ -329,7 +333,7 @@
 
     </head>
     <body>
-        <p>Date: <input type="text" id="datepicker"><b> // </b><button type="button", id="demo">hide/show lots</button></p>
+        <p>Date: <input type="text" id="datepicker"><b> // </b><button type="button", id="demo">hide/show lots</button><button type="button", id="login", onclick="showLogin()">Login</button></p>
         <p><b style="color:rgb(32, 138, 0)">   accesible // </b><b style="color:rgb(255, 0, 0)">// interdit</b></p>
         <div id="viewDiv"></div>
     </body>
