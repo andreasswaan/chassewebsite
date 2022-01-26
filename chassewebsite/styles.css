@@ -53,6 +53,11 @@
     cursor: pointer;
   }
 
+  #show-map {
+    text-align: right;
+    float:right;
+  }
+
   #forgot-password:hover {
     opacity: 0.7;
   }

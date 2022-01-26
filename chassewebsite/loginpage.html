@@ -35,6 +35,7 @@
 
         <div id="login-page">
           <button id="show-register">Sign Up</button>
+          <button id="show-map" onclick="showmap()">Show map</button>
           <h3>Sign In</h3>
           Email <br />
           <input type="email" id="login-email" /><br />
@@ -213,6 +214,12 @@
         
         window.location.href = "./homepage.html";
       };
+
+      const showmap = () => {
+       
+        
+       window.location.href = "./index.html";
+     };
       
       const signOut = () => {
         firebase
