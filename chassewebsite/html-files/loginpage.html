@@ -22,14 +22,20 @@
         <div id="registration-page" class="hide">
           <button id="show-login">Sign In</button>
           <h3>Sign Up</h3>
+          Nom <br />
+          <input id="registration-nom" /><br />
+          Prenom <br />
+          <input id="registration-prenom" /><br />
           Email <br />
           <input type="email" id="registration-email" /><br />
-          Confirm Email <br />
-          <input type="email" id="registration-reemail" autocomplete="disable"/>
-            <br />Password <br />
+          Password <br />
           <input type="password" id="registration-password" />
           <br />Confirm Password <br />
-          <input type="password" id="registration-repassword" autocomplete="disable"/><br />
+          <input type="password" id="registration-repassword" /><br />
+          <input type="radio" id="chasseurbtn" name="categorie" value="chasseur">
+          <label for="chasseurbtn">Chasseur</label><br/>
+          <input type="radio" id="centretourisme" name="categorie" value="centretourisme">
+          <label for="centretourisme">Centre De Tourisme</label>
           <center><button id="register">Sign Up</button></center>
         </div>
 
@@ -74,8 +80,10 @@
 
     <!-- TODO: Add SDKs for Firebase products that you want to use-->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script src="./style-and-firebase-files/informationapp.js"> </script>
+    <script src="./style-and-firebase-files/register.js"> </script>
 
     <script>
       //invokes firebase authentication.
@@ -124,33 +132,7 @@
 
    
 
-      const register = () => {
-        const email = document.querySelector("#registration-email").value;
-        const reemail = document.querySelector("#registration-reemail").value;
-        const password = document.querySelector("#registration-password").value;
-        const repassword = document.querySelector("#registration-repassword").value;
-
-        if (email.trim() == "") {
-          alert("Enter Email");
-        } else if (password.trim().length < 7) {
-          alert("Password must be at least 7 characters");
-        } else if (email != reemail) {
-          alert("emails do not match");
-        } 
-        else if (password != repassword) {
-          alert("passwords do not match");
-        } else {
-          auth
-            .createUserWithEmailAndPassword(email, password)
-            .catch(function (error) {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              alert(errorMessage);
-              // ...
-            });
-        }
-      };
+      
 
       document.querySelector("#register").addEventListener("click", () => {
         register();
@@ -200,8 +182,7 @@
         auth.signInWithEmailAndPassword(email, password);
         firebase
           .auth()
-          .signInWithEmailAndPassword(email, password)
-          .catch(function (error) {
+          .signInWithEmailAndPassword(email, password).catch(function (error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -209,11 +190,17 @@
           });
       };
 
-      const showHomepage = () => {
+      const showhomepagechasseur = () => {
        
         
-        window.location.href = "./homepage.html";
+        window.location.href = "./homepagechasseur.html";
       };
+
+      const showhompagetourisme = () => {
+       
+        
+       window.location.href = "./homepagetourisme.html";
+     };
 
       const showmap = () => {
        
@@ -232,20 +219,51 @@
             alert("error signing out, check network connection");
           });
       };
-
+      var uid = '1'
       auth.onAuthStateChanged((firebaseUser) => {
 
-          if  (firebaseUser) {
-            if (firebase.auth().currentUser.emailVerified == false) {
-                console.log(firebase.auth().currentUser.emailVerified)
-                showemaillink()
+        if  (firebaseUser) {
+          var db = firebase.firestore();
+          var uid = firebaseUser.uid
+          if (auth.currentUser.emailVerified == false) {
+            console.log(firebase.auth().currentUser.emailVerified)
+            showemaillink()
+          }else {
+            uid = firebase.auth().currentUser.uid
+            var docRef = db.collection("users").doc(uid);
+            docRef.get().then((doc) => {
+            if (doc.exists) {
+              console.log("Document data:", doc.data());
+              const { category } = doc.data()
+              window.categoryvar = category
+              console.log(category)
+              if(categoryvar == "chasseur"){
+                showhomepagechasseur()
+              }else if (categoryvar == 'centretourisme'){
+                showhompagetourisme()
+              }
+              
+            
             }
+            
+          })
 
-          else {showHomepage();}
-        }else{
-            showLogin();
+          }
         }
+        
       });
+
+
+     
+        
+         
+      
+
+
+
+
+
+
 
       document.querySelector("#forgot-password").addEventListener("click", () => {
             showforgotpassword()
