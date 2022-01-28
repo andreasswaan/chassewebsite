@@ -34,6 +34,7 @@
             var numerosdelot3 = [1]
             var csvData = new Array();
             var jsonObject = request.responseText.split();
+            
             for (var i = 0; i < jsonObject.length; i++) {
                 csvData.push(jsonObject[i].split(';'));
                 
@@ -317,7 +318,7 @@
           
         
                 const showLogin = () => {
-        window.location.href = "./loginpage.html";
+        window.location.href = "./home.html";
       };
 
 

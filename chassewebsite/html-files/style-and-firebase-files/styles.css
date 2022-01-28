@@ -58,6 +58,28 @@
     float:right;
   }
 
+  #chasseurbtn {
+    align-items: left;
+    text-align: left;
+    border: none;
+    width: 4%;
+    margin-bottom: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 3px;
+  }
+
+  #centretourisme {
+    align-items: left;
+    text-align: left;
+    border: none;
+    width: 4%;
+    margin-bottom: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 3px;
+  }
+
   #forgot-password:hover {
     opacity: 0.7;
   }

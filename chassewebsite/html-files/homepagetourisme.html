@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <br />Logged in tourisme <br />
+    <button id="signout">Sign Out</button>
+</body>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use-->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="./style-and-firebase-files/informationapp.js"></script>
+<script>
+
+    const auth = firebase.auth();
+    var db = firebase.firestore();
+    
+
+
+          const showhomepagechasseur = () => {
+       
+        
+       window.location.href = "./homepagechasseur.html";
+     };
+
+     const showhompagetourisme = () => {
+      
+       
+      window.location.href = "./homepagetourisme.html";
+    };
+          
+
+
+
+
+
+
+    document.querySelector("#signout").addEventListener("click", () => {
+        signOut();
+    });
+
+    const signOut = () => {
+        firebase
+          .auth()
+          .signOut()
+          .then(function () {
+            showLogin()
+          })
+          .catch(function (error) {
+            alert("error signing out, check network connection");
+          });
+    };
+
+    const showLogin = () => {
+        window.location.href = "./loginpage.html";
+      };
+
+
+      auth.onAuthStateChanged((firebaseUser) => {
+        if (firebaseUser) {
+          var uid = firebase.auth().currentUser.uid
+            var docRef = db.collection("users").doc(uid);
+            docRef.get().then((doc) => {
+            if (doc.exists) {
+              console.log("Document data:", doc.data());
+              const { category } = doc.data()
+              window.categoryvar = category
+              console.log(category)
+              if(categoryvar == "chasseur"){
+                showhomepagechasseur()
+              }else{}
+              
+            
+            }
+            
+          })
+
+          
+        }
+        else{
+            showLogin();
+        }
+      });
+</script>
+ 
+</html>
