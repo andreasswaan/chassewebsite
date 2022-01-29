@@ -7,8 +7,29 @@
     <title>Document</title>
 </head>
 <body>
-    <br />Logged in chasseur <br />
-    <button id="signout">Sign Out</button>
+  <div class="forms-out">
+    <div class="forms-in">
+      <div id="top-bar" >
+        <label id="nomlbl"></label><label>, </label><label id="prenomlbl"></label>
+        <button id="signout">Sign Out</button>
+    </div>
+    </div>
+  </div>
+  <div class="forms-out">
+    <div class="forms-in">
+      <div id="top-bar" >
+        
+        <button id="demandebtn">Nouvelle demande</button><button id="anullerdemandebtn" class="hide">Annuler demande</button>
+        <div id="demande-page" class='hide'>
+          <label for="quantity">Combien de Dates ?</label>
+          <input type="number" id="quantity" name="quantity" min="1">
+          <button id="submit">Envoyer</button><label>(Une date, un lot) </label>
+
+
+        </div>
+    </div>
+    </div>
+  </div>
 </body>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -17,6 +38,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="./style-and-firebase-files/informationapp.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="./style-and-firebase-files/styleshomepage.css">
 <script>
     const auth = firebase.auth();
     var db = firebase.firestore();
@@ -40,11 +62,32 @@
         window.location.href = "./loginpage.html";
       };
 
+      const showdemandepage = () => {
+        document.querySelector("#demande-page").classList.remove("hide");  
+        document.querySelector("#anullerdemandebtn").classList.remove("hide");  
+      };
+
+      document.querySelector("#demandebtn").addEventListener("click", () => {
+        showdemandepage();
+      });
+
+      const hidedemandepage = () => {
+        document.querySelector("#demande-page").classList.add("hide");  
+        document.querySelector("#anullerdemandebtn").classList.add("hide");  
+      };
+
+      document.querySelector("#anullerdemandebtn").addEventListener("click", () => {
+        hidedemandepage();
+      });
+
+      var uid = ''
 
       auth.onAuthStateChanged((firebaseUser) => {
         if (firebaseUser) {
-          var uid = firebase.auth().currentUser.uid
-            var docRef = db.collection("users").doc(uid);
+          
+          uid = firebase.auth().currentUser.uid
+          namelable()
+            var docRef = db.collection("users").doc(uid); 
             docRef.get().then((doc) => {
             if (doc.exists) {
               console.log("Document data:", doc.data());
@@ -59,14 +102,22 @@
             }
             
           })
-
-          
         }
         else{
-            showLogin();
+          showLogin();
         }
       });
       const showhompagetourisme = () => {window.location.href = "./homepagetourisme.html";};
+      function namelable(){
+        var docRef = db.collection("users").doc(uid);
+        docRef.get().then((doc) => {
+          if (doc.exists) {
+            document.getElementById("nomlbl").innerText = doc.data().name;
+            document.getElementById("prenomlbl").innerText = doc.data().prenom;
+          }
+          
+        })
+      }
 </script>
  
 </html>
