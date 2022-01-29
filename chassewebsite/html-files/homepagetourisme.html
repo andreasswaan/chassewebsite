@@ -7,8 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    <br />Logged in tourisme <br />
-    <button id="signout">Sign Out</button>
+  <div class="forms-out">
+    <div class="forms-in">
+      <div id="top-bar" >
+        <label id="nomlbl"></label><label>, </label><label id="prenomlbl"></label>
+        <button id="signout">Sign Out</button>
+    </div>
+    </div>
+  </div>
 </body>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -17,11 +23,38 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="./style-and-firebase-files/informationapp.js"></script>
+    <link rel="stylesheet" href="./style-and-firebase-files/styleshomepage.css">
 <script>
 
     const auth = firebase.auth();
     var db = firebase.firestore();
-    
+    auth.onAuthStateChanged((firebaseUser) => {
+        if (firebaseUser) {
+          window.uid = firebase.auth().currentUser.uid
+          namelable()
+            var docRef = db.collection("users").doc(uid);
+            docRef.get().then((doc) => {
+            if (doc.exists) {
+              console.log("Document data:", doc.data());
+              window.userdata = doc.data()
+              const { category1 } = doc.data()
+              window.categoryvar = category1
+              console.log(doc.data().name)
+              if(categoryvar == "chasseur"){
+                showhomepagechasseur()
+              }else{}
+              
+            
+            }
+            
+          })
+
+          
+        }
+        else{
+            showLogin();
+        }
+      });
 
 
           const showhomepagechasseur = () => {
@@ -35,6 +68,13 @@
        
       window.location.href = "./homepagetourisme.html";
     };
+    
+
+    
+     
+    
+    
+    
           
 
 
@@ -63,31 +103,23 @@
       };
 
 
-      auth.onAuthStateChanged((firebaseUser) => {
-        if (firebaseUser) {
-          var uid = firebase.auth().currentUser.uid
-            var docRef = db.collection("users").doc(uid);
-            docRef.get().then((doc) => {
-            if (doc.exists) {
-              console.log("Document data:", doc.data());
-              const { category } = doc.data()
-              window.categoryvar = category
-              console.log(category)
-              if(categoryvar == "chasseur"){
-                showhomepagechasseur()
-              }else{}
-              
-            
-            }
-            
-          })
 
+
+
+      
+        
+        function namelable(){
+        var docRef = db.collection("users").doc(window.uid);
+        docRef.get().then((doc) => {
+          if (doc.exists) {
+            document.getElementById("nomlbl").innerText = doc.data().name;
+            document.getElementById("prenomlbl").innerText = doc.data().prenom;
+          }
           
-        }
-        else{
-            showLogin();
-        }
-      });
+        })
+      }
+        
+      
 </script>
  
 </html>
