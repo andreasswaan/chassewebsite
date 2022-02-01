@@ -30,6 +30,7 @@
     </div>
     </div>
   </div>
+  <footer> <small>&copy; Copyright 2022, Swaan Andreas / HSBP.bv</small> </footer> 
 </body>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -74,6 +75,7 @@
       const hidedemandepage = () => {
         document.querySelector("#demande-page").classList.add("hide");  
         document.querySelector("#anullerdemandebtn").classList.add("hide");  
+        document.querySelector("#quantity").type.add("reset");  
       };
 
       document.querySelector("#anullerdemandebtn").addEventListener("click", () => {
